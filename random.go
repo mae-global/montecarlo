@@ -158,6 +158,37 @@ func (m *Montecarlo) Election(candiates int) ([]int,error) {
 	return Election(candiates,r),nil
 }
 
+func (m *Montecarlo) ElectionList(list []int) ([]int,error) {
+
+	if len(list) == 0 {
+		return nil,ErrInvalidCandiates
+	}
+
+	m.internal.Lock()
+	defer m.internal.Unlock()
+
+	r := make([]int,(len(list) * 100))
+
+	n := m.internal.read(r)
+	m.internal.counter += n
+
+	if m.internal.counter >= m.Config.RollForwards {
+		if err := m.internal.next(m.Config.Roll); err != nil {
+			return nil,err
+		}
+	}
+
+	results := Election(len(list),r)
+	out := make([]int,0)
+
+	for i := 0; i < len(results); i++ {		
+			out = append(out,list[results[i] - 1])
+	}
+
+	return out,nil
+}
+			
+
 func (m *Montecarlo) Elimination(candiates,rounds int)([]int,error) {
 
 	if candiates <= 0 {

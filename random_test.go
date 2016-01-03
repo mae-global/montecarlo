@@ -94,6 +94,24 @@ func Test_Basic(t *testing.T) {
 		}
 	})
 
+	Convey("Election List",t,func() {
+
+		So(mon,ShouldNotBeNil)
+
+		list := make([]int,0)
+		list = append(list,4)
+		list = append(list,3)
+		list = append(list,1)
+		list = append(list,4)
+		list = append(list,2)
+	
+		for i := 0; i < 5; i++ {
+			r,err := mon.ElectionList(list)
+			So(err,ShouldBeNil)
+			fmt.Printf("ElectionList %d] %v\n",i,r)
+		}
+	})
+
 	Convey("Elimination",t,func() {
 
 		So(mon,ShouldNotBeNil)
