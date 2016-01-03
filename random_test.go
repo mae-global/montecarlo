@@ -71,7 +71,19 @@ func Test_Basic(t *testing.T) {
 			fmt.Printf("Linear[30,100] %02d] %d\n",i,r)
 		}
 	})
-	
+
+	Convey("Linearv",t,func() {
+
+		r,err := mon.Linearv(10,3,122)
+		So(err,ShouldBeNil)
+		So(len(r),ShouldEqual,10)
+		for i := 0; i < len(r); i++ {
+			So(r[i],ShouldBeGreaterThanOrEqualTo,3)
+			So(r[i],ShouldBeLessThanOrEqualTo,122)
+			fmt.Printf("Linearv[3,122] %02d] %d\n",i,r[i])
+		}
+	})
+
 	Convey("RedBlack",t,func() {
 
 		for i := 0; i < 10; i++ {

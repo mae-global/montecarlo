@@ -126,6 +126,36 @@ func (m *Montecarlo) Linear(min,max int) (int,error) {
 	return Linear(r,min,max),nil
 }
 
+func (m *Montecarlo) Linearv(v,min,max int) ([]int,error) {
+
+		if min >= max {
+			return nil,ErrMinGreaterThanMax
+		}
+		if min < 0 {
+			return nil,ErrMinLessThanZero
+		}
+
+		m.internal.Lock()
+		defer m.internal.Unlock()
+		
+		out := make([]int,0)
+		for i := 0; i < v; i++ {
+				r := make([]int,100)
+				n := m.internal.read(r)
+				m.internal.counter += n
+
+				if m.internal.counter >= m.Config.RollForwards {
+					if err := m.internal.next(m.Config.Roll); err != nil {
+						return nil,err
+					}
+				}
+		
+				out = append(out,Linear(r,min,max))
+		}
+
+		return out,nil
+}				
+
 func (m *Montecarlo) RedBlack() (float64,error) {
 	
 	r := make([]int,100) /* FIXME, add variable count */
