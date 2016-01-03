@@ -9,6 +9,8 @@ var (
 	ErrCatalogueExhasted error = fmt.Errorf("catalogue exhasted")
 	ErrInvalidCandiates error = fmt.Errorf("invalid candiate count")
 	ErrInvalidCatalogue error = fmt.Errorf("invalid catalogue")
+	ErrMinGreaterThanMax error = fmt.Errorf("min >= max")
+	ErrMinLessThanZero error = fmt.Errorf("min < 0")
 )
 
 type Cataloguer interface {
@@ -94,6 +96,34 @@ type Montecarlo struct {
 	internal *data
 	
 	Config *Configuration
+}
+
+func (m *Montecarlo) Linear(min,max int) (int,error) {
+		
+	if min >= max {
+		return 0,ErrMinGreaterThanMax
+	}
+
+	if min < 0 {
+		return 0,ErrMinLessThanZero
+	}
+
+
+	r := make([]int,100) /* FIXME */
+	
+	m.internal.Lock()
+	defer m.internal.Unlock()
+
+	n := m.internal.read(r)
+	m.internal.counter += n
+
+	if m.internal.counter >= m.Config.RollForwards {
+		if err := m.internal.next(m.Config.Roll); err != nil {
+			return 0,err
+		}
+	}
+
+	return Linear(r,min,max),nil
 }
 
 func (m *Montecarlo) RedBlack() (float64,error) {

@@ -60,10 +60,19 @@ func Test_Basic(t *testing.T) {
 
 		mon = m
 	})
+
+	Convey("Linear",t,func() {
+
+		for i := 0; i < 10; i++ {
+			r,err := mon.Linear(30,100)
+			So(err,ShouldBeNil)
+			So(r,ShouldBeGreaterThanOrEqualTo,30)
+			So(r,ShouldBeLessThanOrEqualTo,100)
+			fmt.Printf("Linear[30,100] %02d] %d\n",i,r)
+		}
+	})
 	
 	Convey("RedBlack",t,func() {
-
-		So(mon,ShouldNotBeNil)
 
 		for i := 0; i < 10; i++ {
 			r,err := mon.RedBlack()
@@ -74,8 +83,6 @@ func Test_Basic(t *testing.T) {
 
 	Convey("WhiteBlack",t,func() {
 
-		So(mon,ShouldNotBeNil)
-
 		for i := 0; i < 10; i++ {
 			r,err := mon.WhiteBlack()
 			So(err,ShouldBeNil)
@@ -85,8 +92,6 @@ func Test_Basic(t *testing.T) {
 
 	Convey("Election",t,func() {
 
-		So(mon,ShouldNotBeNil)
-
 		for i := 0; i < 5; i++ {
 			r,err := mon.Election(5)
 			So(err,ShouldBeNil)
@@ -95,8 +100,6 @@ func Test_Basic(t *testing.T) {
 	})
 
 	Convey("Election List",t,func() {
-
-		So(mon,ShouldNotBeNil)
 
 		list := make([]int,0)
 		list = append(list,4)
@@ -113,9 +116,7 @@ func Test_Basic(t *testing.T) {
 	})
 
 	Convey("Elimination",t,func() {
-
-		So(mon,ShouldNotBeNil)
-		
+	
 		for i := 0; i < 5; i++ {
 			r,err := mon.Elimination(5,i)
 			So(err,ShouldBeNil)
