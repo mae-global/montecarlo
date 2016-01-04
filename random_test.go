@@ -127,6 +127,14 @@ func Test_Basic(t *testing.T) {
 		}
 	})
 
+	Convey("Election List",t,func() {
+
+		list := []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2}
+		r,err := mon.ElectionList(list)
+		So(err,ShouldBeNil)
+		fmt.Printf("ElectionList %v\n",r)
+	})
+
 	Convey("Elimination",t,func() {
 	
 		for i := 0; i < 5; i++ {

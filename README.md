@@ -1,2 +1,4 @@
 # montecarlo
-Golang code for simple Monte Carlo simulations 
+Go lang package for simple Monte Carlo simulations
+
+## not production code 

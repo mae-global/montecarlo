@@ -3,6 +3,8 @@ package montecarlo
 
 func Election(candiates int,r []int) []int {
 
+	
+
 	order := make(map[int]int,0)
 	for i := 0; i < candiates; i++ {
 		order[i] = 0
@@ -14,8 +16,13 @@ func Election(candiates int,r []int) []int {
 
 	out := make([]int,0)
 
+	
+
+	loop := 0
+
 	for {
-		if len(order) <= 0 {
+		
+		if len(order) <= 0 || loop >= 100 {
 			break
 		}
 
@@ -28,6 +35,7 @@ func Election(candiates int,r []int) []int {
 		
 		out = append(out,largest + 1)
 		delete(order,largest)
+		loop++
 	}
 
 	return out

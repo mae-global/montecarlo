@@ -20,7 +20,7 @@ type Cataloguer interface {
 	Len() int
 }
 
-const DefaultRollForwards int = 10000
+const DefaultRollForwards int = 1000000
 
 type data struct {
 	sync.Mutex
@@ -109,7 +109,7 @@ func (m *Montecarlo) Linear(min,max int) (int,error) {
 	}
 
 
-	r := make([]int,100) /* FIXME */
+	r := make([]int,10) /* FIXME */
 	
 	m.internal.Lock()
 	defer m.internal.Unlock()
@@ -140,7 +140,7 @@ func (m *Montecarlo) Linearv(v,min,max int) ([]int,error) {
 		
 		out := make([]int,0)
 		for i := 0; i < v; i++ {
-				r := make([]int,100)
+				r := make([]int,10)
 				n := m.internal.read(r)
 				m.internal.counter += n
 
@@ -158,7 +158,7 @@ func (m *Montecarlo) Linearv(v,min,max int) ([]int,error) {
 
 func (m *Montecarlo) RedBlack() (float64,error) {
 	
-	r := make([]int,100) /* FIXME, add variable count */
+	r := make([]int,10) /* FIXME, add variable count */
 	
 	m.internal.Lock()
 	defer m.internal.Unlock()
@@ -177,7 +177,7 @@ func (m *Montecarlo) RedBlack() (float64,error) {
 
 func (m *Montecarlo) WhiteBlack() (float64,error) {
 
-	r := make([]int,100) /* FIXME */
+	r := make([]int,10) /* FIXME */
 
 	m.internal.Lock()
 	defer m.internal.Unlock()
@@ -204,7 +204,7 @@ func (m *Montecarlo) Election(candiates int) ([]int,error) {
 	m.internal.Lock()
 	defer m.internal.Unlock()
 
-	r := make([]int,(candiates * 100)) /* FIXME, add variable count */
+	r := make([]int,(candiates * 10)) /* FIXME, add variable count */
 	
 	n := m.internal.read(r)
 	m.internal.counter += n
@@ -224,10 +224,14 @@ func (m *Montecarlo) ElectionList(list []int) ([]int,error) {
 		return nil,ErrInvalidCandiates
 	}
 
+
+
 	m.internal.Lock()
 	defer m.internal.Unlock()
 
-	r := make([]int,(len(list) * 100))
+	r := make([]int,(len(list) * 10))
+
+
 
 	n := m.internal.read(r)
 	m.internal.counter += n
@@ -237,6 +241,7 @@ func (m *Montecarlo) ElectionList(list []int) ([]int,error) {
 			return nil,err
 		}
 	}
+
 
 	results := Election(len(list),r)
 	out := make([]int,0)
@@ -258,7 +263,7 @@ func (m *Montecarlo) Elimination(candiates,rounds int)([]int,error) {
 	m.internal.Lock()
 	defer m.internal.Unlock()
 
-	r := make([]int,(candiates * 100)) /* FIXME */
+	r := make([]int,(candiates * 10)) /* FIXME */
 	
 	n := m.internal.read(r)
 	m.internal.counter += n
